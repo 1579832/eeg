@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 	<meta name="theme-color" content="#090b17">
-	<title>NEON BLOCKFALL — Retro Falling-Block Arcade</title>
+	<title>NEON BLOCKFALL â Retro Falling-Block Arcade</title>
 	<style>
 	:root {
 		--bg: #070813;
@@ -66,7 +66,8 @@
 	}
 	
 	button,
-	select {
+	select,
+	input {
 		font: inherit
 	}
 	
@@ -141,7 +142,8 @@
 	}
 	
 	button:focus-visible,
-	select:focus-visible {
+	select:focus-visible,
+	input:focus-visible {
 		outline: 2px solid var(--amber);
 		outline-offset: 2px
 	}
@@ -580,6 +582,43 @@
 		font-size: 12px
 	}
 	
+	.ghost-opacity-setting {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 8px;
+		grid-column: 1 / -1;
+	}
+	
+	.ghost-opacity-setting label {
+		color: var(--muted);
+		font-size: 12px;
+	}
+	
+	.range-setting {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+		gap: 12px;
+		width: 100%;
+	}
+	
+	.range-setting input[type="range"] {
+		width: 100%;
+		height: 5px;
+		margin: 0;
+		accent-color: var(--cyan);
+		cursor: pointer;
+	}
+	
+	.range-setting output {
+		min-width: 42px;
+		text-align: right;
+		color: var(--cyan);
+		font-weight: bold;
+		font-size: 11px;
+	}
+	
 	.switch {
 		width: 42px;
 		height: 23px;
@@ -764,6 +803,9 @@
 		.settings-grid {
 			grid-template-columns: 1fr
 		}
+		.ghost-opacity-setting {
+			grid-column: auto;
+		}
 		.start-row {
 			grid-template-columns: 1fr
 		}
@@ -791,36 +833,43 @@
 		<header class="topbar">
 			<div class="brand">NEON BLOCKFALL<small>INSERT COURAGE // CLEAR LINES</small></div>
 			<div class="top-actions">
-				<button class="icon-btn" id="themeBtn" title="Change color theme" aria-label="Change color theme">◈</button>
-				<button class="icon-btn" id="soundBtn" title="Toggle sound" aria-label="Toggle sound">♪</button>
-				<button class="icon-btn" id="pauseBtn" title="Pause (P)" aria-label="Pause">Ⅱ</button>
-				<button class="icon-btn" id="settingsBtn" title="Settings" aria-label="Settings">⚙</button>
+				<button class="icon-btn" id="themeBtn" title="Change color theme" aria-label="Change color theme">â</button>
+				<button class="icon-btn" id="soundBtn" title="Toggle sound" aria-label="Toggle sound">âª</button>
+				<button class="icon-btn" id="pauseBtn" title="Pause (P)" aria-label="Pause">â¡</button>
+				<button class="icon-btn" id="settingsBtn" title="Settings" aria-label="Settings">â</button>
 			</div>
 		</header>
+
 		<section class="game-layout" aria-label="Game area">
 			<aside class="side">
 				<div class="panel">
 					<div class="label">Hold</div>
 					<canvas class="mini-canvas" id="holdCanvas" width="120" height="90" aria-label="Held piece"></canvas>
 				</div>
+
 				<div class="panel">
 					<div class="label">Score</div>
 					<div class="big-stat" id="score">0000000</div>
 					<div class="substat"><span>BEST</span><strong id="best">0</strong></div>
 				</div>
+
 				<div class="panel">
 					<div class="label">Lines</div>
 					<div class="big-stat" id="lines">0</div>
 					<div class="substat"><span>LEVEL</span><strong id="level">1</strong></div>
 					<div class="meter"><i id="levelMeter"></i></div>
 				</div>
+
 				<div class="panel keys">
-					<div class="label">Keys</div><b>←</b> <b>→</b> move
-					<br><b>↓</b> soft drop
+					<div class="label">Keys</div>
+					<b>â</b> <b>â</b> move
+					<br><b>â</b> soft drop
 					<br><b>Z</b>/<b>X</b> rotate
 					<br><b>SPC</b> hard drop
-					<br><b>C</b> hold · <b>P</b> pause</div>
+					<br><b>C</b> hold Â· <b>P</b> pause
+				</div>
 			</aside>
+
 			<section class="board-frame" id="boardFrame">
 				<div class="canvas-wrap">
 					<canvas id="board" width="300" height="600" aria-label="Tetris game board"></canvas>
@@ -828,52 +877,83 @@
 					<div class="paused-tint hidden" id="pausedTint">PAUSED</div>
 				</div>
 			</section>
+
 			<aside class="side">
 				<div class="panel">
 					<div class="label">Next // 05</div>
 					<canvas class="mini-canvas" id="nextCanvas" width="120" height="320" aria-label="Upcoming pieces"></canvas>
 				</div>
+
 				<div class="panel">
 					<div class="label">Mode</div>
 					<div class="mode-badge" id="modeName">MARATHON</div>
 					<div class="substat"><span id="goalLabel">GOAL</span><strong id="goal">ENDLESS</strong></div>
 				</div>
+
 				<div class="panel">
 					<div class="label">Time</div>
 					<div class="big-stat" id="timer">00:00.0</div>
-					<div class="substat"><span>COMBO</span><strong id="combo">—</strong></div>
+					<div class="substat"><span>COMBO</span><strong id="combo">â</strong></div>
 				</div>
+
 				<div class="panel">
 					<div class="label">Status</div>
-					<div class="substat" style="border:0;margin:0;padding:0"><span>B2B</span><strong id="b2b">—</strong></div>
+					<div class="substat" style="border:0;margin:0;padding:0"><span>B2B</span><strong id="b2b">â</strong></div>
 					<div class="substat"><span>PPS</span><strong id="pps">0.00</strong></div>
 				</div>
 			</aside>
 		</section>
+
 		<div class="touch" id="touchControls" aria-label="Touch controls">
-			<button class="touch-btn" data-action="left">◀<small>LEFT</small></button>
-			<button class="touch-btn" data-action="right">▶<small>RIGHT</small></button>
-			<button class="touch-btn" data-action="soft">▼<small>DROP</small></button>
-			<button class="touch-btn" data-action="ccw">↶<small>ROTATE</small></button>
-			<button class="touch-btn" data-action="cw">↷<small>ROTATE</small></button>
-			<button class="touch-btn wide" data-action="hard">⤓<small>HARD DROP</small></button>
-			<button class="touch-btn wide" data-action="hold">◇<small>HOLD</small></button>
-			<button class="touch-btn" data-action="pause">Ⅱ<small>PAUSE</small></button>
+			<button class="touch-btn" data-action="left">â<small>LEFT</small></button>
+			<button class="touch-btn" data-action="right">â¶<small>RIGHT</small></button>
+			<button class="touch-btn" data-action="soft">â¼<small>DROP</small></button>
+			<button class="touch-btn" data-action="ccw">â¶<small>ROTATE</small></button>
+			<button class="touch-btn" data-action="cw">â·<small>ROTATE</small></button>
+			<button class="touch-btn wide" data-action="hard">â¤<small>HARD DROP</small></button>
+			<button class="touch-btn wide" data-action="hold">â<small>HOLD</small></button>
+			<button class="touch-btn" data-action="pause">â¡<small>PAUSE</small></button>
 		</div>
-		<div class="status-strip"><span class="live" id="statusText">READY // SELECT A MODE</span><span>60 FPS · OFFLINE · SINGLE FILE</span></div>
+
+		<div class="status-strip">
+			<span class="live" id="statusText">READY // SELECT A MODE</span>
+			<span>60 FPS Â· OFFLINE Â· SINGLE FILE</span>
+		</div>
 	</main>
+
 	<div class="overlay" id="startOverlay">
 		<div class="modal">
 			<h1>NEON BLOCKFALL</h1>
 			<div class="kicker">RETRO SOUL // MODERN RULES</div>
 			<div class="label">Choose transmission</div>
+
 			<div class="mode-grid" id="modeGrid">
-				<button class="mode-card active" data-mode="marathon"><strong>MARATHON</strong><span>Endless classic. Speed rises every 10 lines.</span></button>
-				<button class="mode-card" data-mode="sprint"><strong>SPRINT 40</strong><span>Clear 40 lines as quickly as possible.</span></button>
-				<button class="mode-card" data-mode="ultra"><strong>ULTRA</strong><span>Score attack. You have exactly 3 minutes.</span></button>
-				<button class="mode-card" data-mode="zen"><strong>ZEN</strong><span>No top-out, no pressure. The board rescues you.</span></button>
-				<button class="mode-card" data-mode="chaos"><strong>CHAOS</strong><span>Survive rising garbage. Faster every wave.</span></button>
+				<button class="mode-card active" data-mode="marathon">
+					<strong>MARATHON</strong>
+					<span>Endless classic. Speed rises every 10 lines.</span>
+				</button>
+
+				<button class="mode-card" data-mode="sprint">
+					<strong>SPRINT 40</strong>
+					<span>Clear 40 lines as quickly as possible.</span>
+				</button>
+
+				<button class="mode-card" data-mode="ultra">
+					<strong>ULTRA</strong>
+					<span>Score attack. You have exactly 3 minutes.</span>
+				</button>
+
+				<button class="mode-card" data-mode="zen">
+					<strong>ZEN</strong>
+					<span>No top-out, no pressure. The board rescues you.</span>
+				</button>
+
+				<button class="mode-card" data-mode="chaos">
+					<strong>CHAOS</strong>
+					<span>Survive rising garbage. Faster every wave.</span>
+				</button>
 			</div>
+
 			<div class="start-row">
 				<label class="select-wrap">START LEVEL
 					<select id="startLevel">
@@ -885,72 +965,113 @@
 						<option>15</option>
 					</select>
 				</label>
+
 				<button class="primary" id="startBtn">START GAME</button>
 			</div>
+
 			<div class="best-row" id="bestRow"></div>
 		</div>
 	</div>
+
 	<div class="overlay hidden" id="settingsOverlay">
 		<div class="modal" style="max-width:590px">
 			<h2>SYSTEM SETTINGS</h2>
 			<div class="kicker">TUNE THE ARCADE</div>
+
 			<div class="settings-grid">
-				<div class="setting"><span>SOUND EFFECTS</span>
+				<div class="setting">
+					<span>SOUND EFFECTS</span>
 					<button class="switch" data-setting="sound" aria-label="Toggle sound"><i></i></button>
 				</div>
-				<div class="setting"><span>CHIPTUNE PULSE</span>
+
+				<div class="setting">
+					<span>CHIPTUNE PULSE</span>
 					<button class="switch" data-setting="music" aria-label="Toggle music"><i></i></button>
 				</div>
-				<div class="setting"><span>GHOST PIECE</span>
+
+				<div class="setting">
+					<span>GHOST PIECE</span>
 					<button class="switch" data-setting="ghost" aria-label="Toggle ghost"><i></i></button>
 				</div>
-				<div class="setting"><span>GRID LINES</span>
+
+				<div class="setting">
+					<span>GRID LINES</span>
 					<button class="switch" data-setting="grid" aria-label="Toggle grid"><i></i></button>
 				</div>
-				<div class="setting"><span>SCREEN SHAKE</span>
+
+				<div class="setting">
+					<span>SCREEN SHAKE</span>
 					<button class="switch" data-setting="shake" aria-label="Toggle screen shake"><i></i></button>
 				</div>
-				<div class="setting"><span>CRT SCANLINES</span>
+
+				<div class="setting">
+					<span>CRT SCANLINES</span>
 					<button class="switch" data-setting="scanlines" aria-label="Toggle scanlines"><i></i></button>
 				</div>
+
+				<div class="setting ghost-opacity-setting">
+					<label for="ghostOpacity">GHOST OUTLINE OPACITY</label>
+
+					<div class="range-setting">
+						<input
+							type="range"
+							id="ghostOpacity"
+							min="0"
+							max="1"
+							step="0.01"
+							value="0.18"
+							aria-label="Ghost outline opacity"
+						>
+						<output id="ghostOpacityValue">18%</output>
+					</div>
+				</div>
 			</div>
-			<div class="setting"><span>ARR / MOVE REPEAT</span>
+
+			<div class="setting">
+				<span>ARR / MOVE REPEAT</span>
 				<select id="arrSelect" class="chip">
 					<option value="55">NORMAL</option>
 					<option value="25">FAST</option>
 					<option value="0">INSTANT</option>
 				</select>
 			</div>
+
 			<div class="modal-actions">
 				<button class="chip danger" id="resetStatsBtn">RESET RECORDS</button>
 				<button class="chip" id="closeSettingsBtn">CLOSE</button>
 			</div>
 		</div>
 	</div>
+
 	<div class="overlay hidden" id="gameoverOverlay">
 		<div class="modal" style="max-width:620px;text-align:center">
 			<h2 id="gameoverTitle">SIGNAL LOST</h2>
 			<div class="kicker" id="gameoverSub">THE STACK REACHED THE SKY</div>
-			<div class="new-best hidden" id="newBest">★ NEW PERSONAL RECORD ★</div>
+			<div class="new-best hidden" id="newBest">â NEW PERSONAL RECORD â</div>
+
 			<div class="gameover-stats">
 				<div class="result"><span>SCORE</span><strong id="finalScore">0</strong></div>
 				<div class="result"><span>LINES</span><strong id="finalLines">0</strong></div>
 				<div class="result"><span>TIME</span><strong id="finalTime">0:00</strong></div>
 				<div class="result"><span>MAX COMBO</span><strong id="finalCombo">0</strong></div>
 			</div>
+
 			<div class="modal-actions" style="justify-content:center">
 				<button class="chip" id="menuBtn">MODE SELECT</button>
 				<button class="primary" id="againBtn">PLAY AGAIN</button>
 			</div>
 		</div>
 	</div>
+
 	<script>
 	(() => {
 		'use strict';
+
 		const COLS = 10,
 			ROWS = 22,
 			HIDDEN = 2,
 			CELL = 30;
+
 		const SHAPES = {
 			I: [
 				[0, 0],
@@ -995,6 +1116,7 @@
 				[2, 1]
 			]
 		};
+
 		const COLORS = {
 			I: '#2df7ff',
 			J: '#5577ff',
@@ -1005,6 +1127,7 @@
 			Z: '#ff496c',
 			G: '#59637a'
 		};
+
 		const MODES = {
 			marathon: {
 				name: 'MARATHON',
@@ -1027,6 +1150,7 @@
 				goal: 'SURVIVE'
 			}
 		};
+
 		const THEMES = [{
 			name: 'neon',
 			css: {
@@ -1076,8 +1200,10 @@
 				G: '#536477'
 			}
 		}];
+
 		const $ = s => document.querySelector(s),
 			$$ = s => [...document.querySelectorAll(s)];
+
 		const el = {
 			board: $('#board'),
 			hold: $('#holdCanvas'),
@@ -1101,19 +1227,34 @@
 			settings: $('#settingsOverlay'),
 			over: $('#gameoverOverlay')
 		};
+
 		const ctx = el.board.getContext('2d'),
 			hctx = el.hold.getContext('2d'),
 			nctx = el.next.getContext('2d');
+
 		let settings = load('nb-settings', {
 			sound: true,
 			music: false,
 			ghost: true,
+			ghostOpacity: 0.18,
 			grid: true,
 			shake: true,
 			scanlines: true,
 			arr: 55,
 			theme: 0
 		});
+
+		// Protect against invalid/old saved values.
+		settings.ghostOpacity = Math.max(
+			0,
+			Math.min(
+				1,
+				Number.isFinite(Number(settings.ghostOpacity))
+					? Number(settings.ghostOpacity)
+					: 0.18
+			)
+		);
+
 		let records = load('nb-records', {
 			marathon: 0,
 			sprint: null,
@@ -1122,6 +1263,7 @@
 			chaos: 0,
 			games: 0
 		});
+
 		let state = 'menu',
 			mode = 'marathon',
 			board = [],
@@ -1136,6 +1278,7 @@
 			maxCombo = 0,
 			b2b = 0,
 			pieces = 0;
+
 		let startTime = 0,
 			pauseAt = 0,
 			pausedTotal = 0,
@@ -1147,6 +1290,7 @@
 			remaining = 0,
 			lastActionRotate = false,
 			chaosCounter = 0;
+
 		let particles = [],
 			keys = {},
 			moveTimers = {
@@ -1181,10 +1325,12 @@
 
 		function shuffleBag() {
 			let a = Object.keys(SHAPES);
+
 			for(let i = a.length - 1; i; i--) {
 				let j = Math.floor(Math.random() * (i + 1));
 				[a[i], a[j]] = [a[j], a[i]]
 			}
+
 			return a
 		}
 
@@ -1194,28 +1340,44 @@
 
 		function spawn(type = queue.shift()) {
 			fillQueue();
+
 			piece = {
-				type, x: 3, y: 0, r: 0, cells: SHAPES[type].map(p => [...p])
+				type,
+				x: 3,
+				y: 0,
+				r: 0,
+				cells: SHAPES[type].map(p => [...p])
 			};
+
 			canHold = true;
 			lockAcc = 0;
 			lockMoves = 0;
 			lastActionRotate = false;
 			pieces++;
+
 			if(collides(piece, 0, 0, piece.cells)) {
 				if(mode === 'zen') {
 					rescueBoard();
 					piece.y = 0
 				} else endGame(false)
 			}
+
 			drawMinis();
 		}
 
 		function rotateCells(cells, dir, type) {
 			if(type === 'O') return cells.map(p => [...p]);
-			if(type === 'I') return cells.map(([x, y]) => dir > 0 ? [3 - y, x] : [y, 3 - x]);
-			return cells.map(([x, y]) => dir > 0 ? [2 - y, x] : [y, 2 - x])
+
+			if(type === 'I')
+				return cells.map(([x, y]) =>
+					dir > 0 ? [3 - y, x] : [y, 3 - x]
+				);
+
+			return cells.map(([x, y]) =>
+				dir > 0 ? [2 - y, x] : [y, 2 - x]
+			)
 		}
+
 		const KICKS = [
 			[0, 0],
 			[-1, 0],
@@ -1230,7 +1392,9 @@
 
 		function rotate(dir) {
 			if(state !== 'playing') return;
+
 			const next = rotateCells(piece.cells, dir, piece.type);
+
 			for(const [kx, ky] of KICKS) {
 				if(!collides(piece, kx, ky, next)) {
 					piece.cells = next;
@@ -1243,6 +1407,7 @@
 					return
 				}
 			}
+
 			sfx('deny')
 		}
 
@@ -1250,24 +1415,34 @@
 			return cells.some(([cx, cy]) => {
 				let x = p.x + cx + dx,
 					y = p.y + cy + dy;
-				return x < 0 || x >= COLS || y >= ROWS || (y >= 0 && board[y][x])
+
+				return x < 0 ||
+					x >= COLS ||
+					y >= ROWS ||
+					(y >= 0 && board[y][x])
 			})
 		}
 
 		function move(dx, dy, soft = false) {
 			if(state !== 'playing') return false;
+
 			if(!collides(piece, dx, dy)) {
 				piece.x += dx;
 				piece.y += dy;
 				lastActionRotate = false;
+
 				if(dx) resetLock();
+
 				if(soft && dy) {
 					score++;
 					updateHud()
 				}
+
 				return true
 			}
+
 			if(dy > 0) lockAcc = Math.max(lockAcc, 500);
+
 			return false
 		}
 
@@ -1280,8 +1455,11 @@
 
 		function hardDrop() {
 			if(state !== 'playing') return;
+
 			let d = 0;
+
 			while(!collides(piece, 0, d + 1)) d++;
+
 			piece.y += d;
 			score += d * 2;
 			sfx('hard');
@@ -1290,9 +1468,12 @@
 
 		function holdPiece() {
 			if(state !== 'playing' || !canHold) return;
+
 			const old = hold;
+
 			hold = piece.type;
 			canHold = false;
+
 			if(old) {
 				piece = {
 					type: old,
@@ -1301,9 +1482,11 @@
 					r: 0,
 					cells: SHAPES[old].map(p => [...p])
 				};
+
 				lockAcc = 0;
 				lastActionRotate = false
 			} else spawn();
+
 			canHold = false;
 			sfx('hold');
 			drawMinis()
@@ -1311,38 +1494,62 @@
 
 		function ghostY() {
 			let d = 0;
+
 			while(!collides(piece, 0, d + 1)) d++;
+
 			return piece.y + d
 		}
 
 		function isTSpin() {
 			if(piece.type !== 'T' || !lastActionRotate) return false;
+
 			let cx = piece.x + 1,
 				cy = piece.y + 1,
 				n = 0;
-			for(const [dx, dy] of[[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
+
+			for(const [dx, dy] of [
+				[-1, -1],
+				[1, -1],
+				[-1, 1],
+				[1, 1]
+			]) {
 				let x = cx + dx,
 					y = cy + dy;
-				if(x < 0 || x >= COLS || y >= ROWS || y < 0 || board[y][x]) n++
+
+				if(
+					x < 0 ||
+					x >= COLS ||
+					y >= ROWS ||
+					y < 0 ||
+					board[y][x]
+				) n++
 			}
+
 			return n >= 3
 		}
 
 		function lockPiece() {
 			if(state !== 'playing') return;
+
 			let topped = false;
+
 			for(const [cx, cy] of piece.cells) {
 				let x = piece.x + cx,
 					y = piece.y + cy;
+
 				if(y < 0) {
 					topped = true;
 					continue
 				}
+
 				board[y][x] = piece.type;
+
 				if(y < HIDDEN) topped = true
 			}
+
 			const tspin = isTSpin(),
 				cleared = clearLines();
+
 			if(topped && !cleared) {
 				if(mode === 'zen') rescueBoard();
 				else {
@@ -1350,35 +1557,52 @@
 					return
 				}
 			}
+
 			applyScore(cleared, tspin);
 			chaosCounter++;
-			if(mode === 'chaos' && chaosCounter >= Math.max(4, 9 - Math.floor(level / 3))) {
+
+			if(
+				mode === 'chaos' &&
+				chaosCounter >= Math.max(4, 9 - Math.floor(level / 3))
+			) {
 				chaosCounter = 0;
 				addGarbage(1 + Math.floor(level / 8));
 			}
+
 			if(mode === 'sprint' && lines >= 40) {
 				endGame(true);
 				return
 			}
+
 			spawn();
 			updateHud();
 		}
 
 		function clearLines() {
 			let full = [];
+
 			for(let y = 0; y < ROWS; y++)
 				if(board[y].every(Boolean)) full.push(y);
+
 			if(!full.length) return 0;
+
 			for(const y of full) {
-				for(let x = 0; x < COLS; x++) burst(x, y, board[y][x]);
+				for(let x = 0; x < COLS; x++)
+					burst(x, y, board[y][x]);
+
 				board.splice(y, 1);
 				board.unshift(Array(COLS).fill(null))
 			}
-			if(settings.shake && !matchMedia('(prefers-reduced-motion:reduce)').matches) {
+
+			if(
+				settings.shake &&
+				!matchMedia('(prefers-reduced-motion:reduce)').matches
+			) {
 				el.frame.classList.remove('shake');
 				void el.frame.offsetWidth;
 				el.frame.classList.add('shake')
 			}
+
 			return full.length
 		}
 
@@ -1386,16 +1610,30 @@
 			if(n) {
 				combo++;
 				maxCombo = Math.max(maxCombo, combo);
-				let base = tspin ? [400, 800, 1200, 1600][n] || 400 : [0, 100, 300, 500, 800][n];
+
+				let base = tspin
+					? [400, 800, 1200, 1600][n] || 400
+					: [0, 100, 300, 500, 800][n];
+
 				let difficult = (n === 4 || tspin);
+
 				if(difficult && b2b > 0) base *= 1.5;
 				if(difficult) b2b++;
 				else b2b = 0;
-				score += Math.floor((base + Math.max(0, combo) * 50) * level);
+
+				score += Math.floor(
+					(base + Math.max(0, combo) * 50) * level
+				);
+
 				lines += n;
 				level = selectedLevel + Math.floor(lines / 10);
-				let name = tspin ? 'T-SPIN ' + (['', 'SINGLE', 'DOUBLE', 'TRIPLE'][n] || '') : ['', 'SINGLE', 'DOUBLE', 'TRIPLE', 'TETRIS'][n];
-				if(combo > 0) name += ' · ' + combo + ' COMBO';
+
+				let name = tspin
+					? 'T-SPIN ' + (['', 'SINGLE', 'DOUBLE', 'TRIPLE'][n] || '')
+					: ['', 'SINGLE', 'DOUBLE', 'TRIPLE', 'TETRIS'][n];
+
+				if(combo > 0) name += ' Â· ' + combo + ' COMBO';
+
 				callout(name.trim());
 				sfx(n === 4 || tspin ? 'tetris' : 'clear');
 				flash();
@@ -1406,7 +1644,10 @@
 
 		function rescueBoard() {
 			board.splice(0, Math.min(6, board.length));
-			while(board.length < ROWS) board.unshift(Array(COLS).fill(null));
+
+			while(board.length < ROWS)
+				board.unshift(Array(COLS).fill(null));
+
 			score = Math.max(0, score - 1000);
 			callout('ZEN RESCUE');
 			sfx('rescue')
@@ -1415,13 +1656,20 @@
 		function addGarbage(count) {
 			for(let i = 0; i < count; i++) {
 				board.shift();
+
 				let hole = Math.floor(Math.random() * COLS);
-				board.push(Array.from({
-					length: COLS
-				}, (_, x) => x === hole ? null : 'G'))
+
+				board.push(
+					Array.from({
+						length: COLS
+					}, (_, x) => x === hole ? null : 'G')
+				)
 			}
+
 			piece.y -= count;
+
 			if(collides(piece)) piece.y += count;
+
 			callout('GARBAGE +' + count);
 			sfx('garbage')
 		}
@@ -1429,6 +1677,7 @@
 		function begin() {
 			mode = $('.mode-card.active').dataset.mode;
 			selectedLevel = +$('#startLevel').value;
+
 			board = emptyBoard();
 			queue = [];
 			hold = null;
@@ -1449,27 +1698,38 @@
 			elapsed = 0;
 			remaining = mode === 'ultra' ? 180000 : 0;
 			state = 'playing';
+
 			fillQueue();
 			spawn();
+
 			el.start.classList.add('hidden');
 			el.over.classList.add('hidden');
 			el.paused.classList.add('hidden');
+
 			el.mode.textContent = MODES[mode].name;
 			el.goal.textContent = MODES[mode].goal;
 			el.status.textContent = 'LIVE // ' + MODES[mode].name;
 			el.status.classList.add('live');
+
 			records.games = (records.games || 0) + 1;
 			save('nb-records', records);
+
 			updateHud();
 			startMusic();
+
 			last = performance.now();
 			requestAnimationFrame(loop);
+
 			sfx('start')
 		}
 
 		function togglePause(force) {
 			if(state !== 'playing' && state !== 'paused') return;
-			let pause = force === undefined ? state === 'playing' : force;
+
+			let pause = force === undefined
+				? state === 'playing'
+				: force;
+
 			if(pause && state === 'playing') {
 				state = 'paused';
 				pauseAt = performance.now();
@@ -1483,16 +1743,20 @@
 				startMusic();
 				requestAnimationFrame(loop)
 			}
+
 			sfx('pause')
 		}
 
 		function endGame(won) {
 			if(state === 'over') return;
+
 			state = 'over';
 			stopMusic();
+
 			let t = elapsed;
 			let old = records[mode],
 				isBest = false;
+
 			if(mode === 'sprint') {
 				if(won && (old == null || t < old)) {
 					records.sprint = t;
@@ -1502,78 +1766,127 @@
 				records[mode] = score;
 				isBest = true
 			}
+
 			save('nb-records', records);
 			updateBests();
-			$('#gameoverTitle').textContent = mode === 'ultra' ? 'TIME UP' : won ? 'MISSION COMPLETE' : 'SIGNAL LOST';
-			$('#gameoverSub').textContent = mode === 'ultra' ? 'THREE-MINUTE SCORE LOCKED' : won ? 'FORTY LINES CLEARED' : 'THE STACK REACHED THE SKY';
+
+			$('#gameoverTitle').textContent =
+				mode === 'ultra'
+					? 'TIME UP'
+					: won
+						? 'MISSION COMPLETE'
+						: 'SIGNAL LOST';
+
+			$('#gameoverSub').textContent =
+				mode === 'ultra'
+					? 'THREE-MINUTE SCORE LOCKED'
+					: won
+						? 'FORTY LINES CLEARED'
+						: 'THE STACK REACHED THE SKY';
+
 			$('#finalScore').textContent = score.toLocaleString();
 			$('#finalLines').textContent = lines;
 			$('#finalTime').textContent = formatTime(t, false);
 			$('#finalCombo').textContent = maxCombo;
 			$('#newBest').classList.toggle('hidden', !isBest);
+
 			el.over.classList.remove('hidden');
 			el.status.textContent = 'OFFLINE // RUN ENDED';
+
 			sfx(won ? 'win' : 'over')
 		}
 
 		function goMenu() {
 			state = 'menu';
 			stopMusic();
+
 			el.over.classList.add('hidden');
 			el.settings.classList.add('hidden');
 			el.start.classList.remove('hidden');
 			el.paused.classList.add('hidden');
+
 			el.status.textContent = 'READY // SELECT A MODE';
+
 			drawAttract();
 			updateBests()
 		}
 
 		function loop(now) {
 			if(state !== 'playing') return;
+
 			let dt = Math.min(50, now - last);
 			last = now;
+
 			elapsed = now - startTime - pausedTotal;
+
 			if(mode === 'ultra') {
 				remaining = Math.max(0, 180000 - elapsed);
+
 				if(remaining <= 0) {
 					endGame(true);
 					return
 				}
 			}
+
 			handleHeld(dt);
+
 			dropAcc += dt;
+
 			let interval = dropInterval();
+
 			if(dropAcc >= interval) {
 				if(!move(0, 1)) lockAcc += dropAcc;
 				dropAcc %= interval
-			} else if(collides(piece, 0, 1)) lockAcc += dt;
+			} else if(collides(piece, 0, 1)) {
+				lockAcc += dt
+			}
+
 			if(lockAcc >= 500) lockPiece();
+
 			updateParticles(dt);
 			draw();
 			updateHud();
+
 			requestAnimationFrame(loop)
 		}
 
 		function dropInterval() {
-			return Math.max(45, 1000 * Math.pow(.82, level - 1))
+			return Math.max(
+				45,
+				1000 * Math.pow(.82, level - 1)
+			)
 		}
 
 		function handleHeld(dt) {
-			for(const dir of['left', 'right'])
+			for(const dir of ['left', 'right']) {
 				if(keys[dir]) {
 					moveTimers[dir] += dt;
+
 					if(moveTimers[dir] > 150) {
 						if(settings.arr === 0) {
-							while(move(dir === 'left' ? -1 : 1, 0)) {}
+							while(
+								move(
+									dir === 'left' ? -1 : 1,
+									0
+								)
+							) {}
+
 							moveTimers[dir] = -9999
 						} else if(moveTimers[dir] >= 150 + settings.arr) {
-							move(dir === 'left' ? -1 : 1, 0);
+							move(
+								dir === 'left' ? -1 : 1,
+								0
+							);
+
 							moveTimers[dir] = 150
 						}
 					}
 				}
+			}
+
 			if(keys.soft) {
 				moveTimers.soft += dt;
+
 				if(moveTimers.soft > 35) {
 					move(0, 1, true);
 					moveTimers.soft = 0
@@ -1583,17 +1896,21 @@
 
 		function draw() {
 			ctx.clearRect(0, 0, 300, 600);
+
 			ctx.fillStyle = '#080b17';
 			ctx.fillRect(0, 0, 300, 600);
+
 			if(settings.grid) {
 				ctx.strokeStyle = 'rgba(140,190,255,.055)';
 				ctx.lineWidth = 1;
+
 				for(let x = 0; x <= COLS; x++) {
 					ctx.beginPath();
 					ctx.moveTo(x * CELL + .5, 0);
 					ctx.lineTo(x * CELL + .5, 600);
 					ctx.stroke()
 				}
+
 				for(let y = 0; y <= 20; y++) {
 					ctx.beginPath();
 					ctx.moveTo(0, y * CELL + .5);
@@ -1601,89 +1918,243 @@
 					ctx.stroke()
 				}
 			}
+
 			for(let y = HIDDEN; y < ROWS; y++)
 				for(let x = 0; x < COLS; x++)
-					if(board[y][x]) drawBlock(ctx, x * CELL, (y - HIDDEN) * CELL, board[y][x], 1, CELL);
+					if(board[y][x])
+						drawBlock(
+							ctx,
+							x * CELL,
+							(y - HIDDEN) * CELL,
+							board[y][x],
+							1,
+							CELL
+						);
+
 			if(piece && state !== 'menu') {
 				if(settings.ghost) {
 					let gy = ghostY();
-					for(const [x, y] of piece.cells)
-						if(gy + y >= HIDDEN) drawBlock(ctx, (piece.x + x) * CELL, (gy + y - HIDDEN) * CELL, piece.type, 0.4, CELL)
+
+					for(const [x, y] of piece.cells) {
+						if(gy + y >= HIDDEN) {
+							drawBlock(
+								ctx,
+								(piece.x + x) * CELL,
+								(gy + y - HIDDEN) * CELL,
+								piece.type,
+								settings.ghostOpacity,
+								CELL,
+								true
+							);
+						}
+					}
 				}
+
 				for(const [x, y] of piece.cells)
-					if(piece.y + y >= HIDDEN) drawBlock(ctx, (piece.x + x) * CELL, (piece.y + y - HIDDEN) * CELL, piece.type, 1, CELL)
+					if(piece.y + y >= HIDDEN)
+						drawBlock(
+							ctx,
+							(piece.x + x) * CELL,
+							(piece.y + y - HIDDEN) * CELL,
+							piece.type,
+							1,
+							CELL
+						);
 			}
+
 			for(const p of particles) {
 				ctx.globalAlpha = p.life / 600;
 				ctx.fillStyle = p.color;
 				ctx.fillRect(p.x, p.y, p.size, p.size)
 			}
+
 			ctx.globalAlpha = 1;
+
 			let g = ctx.createLinearGradient(0, 0, 0, 600);
-			g.addColorStop(0, 'rgba(45,247,255,.035)');
+
+			g.addColorStop(
+				0,
+				'rgba(45,247,255,.035)'
+			);
+
 			g.addColorStop(.5, 'transparent');
-			g.addColorStop(1, 'rgba(255,61,187,.035)');
+
+			g.addColorStop(
+				1,
+				'rgba(255,61,187,.035)'
+			);
+
 			ctx.fillStyle = g;
 			ctx.fillRect(0, 0, 300, 600)
 		}
 
 		function colorFor(type) {
-			return(THEMES[settings.theme].colors || COLORS)[type] || COLORS[type]
+			return(
+				THEMES[settings.theme].colors || COLORS
+			)[type] || COLORS[type]
 		}
 
-		function drawBlock(c, x, y, type, alpha = 1, size = CELL, outline = false) {
+		function drawBlock(
+			c,
+			x,
+			y,
+			type,
+			alpha = 1,
+			size = CELL,
+			outline = false
+		) {
 			let col = colorFor(type);
+
 			c.save();
 			c.globalAlpha = alpha;
+
 			if(outline) {
 				c.strokeStyle = col;
 				c.lineWidth = 2;
-				c.strokeRect(x + 3, y + 3, size - 6, size - 6);
+				c.strokeRect(
+					x + 3,
+					y + 3,
+					size - 6,
+					size - 6
+				);
 				c.restore();
 				return
 			}
+
 			c.fillStyle = col;
 			c.shadowColor = col;
 			c.shadowBlur = alpha > .5 ? 7 : 0;
-			c.fillRect(x + 2, y + 2, size - 4, size - 4);
+
+			c.fillRect(
+				x + 2,
+				y + 2,
+				size - 4,
+				size - 4
+			);
+
 			c.shadowBlur = 0;
-			let grad = c.createLinearGradient(x, y, x + size, y + size);
-			grad.addColorStop(0, 'rgba(255,255,255,.38)');
-			grad.addColorStop(.35, 'rgba(255,255,255,.05)');
-			grad.addColorStop(1, 'rgba(0,0,0,.35)');
+
+			let grad = c.createLinearGradient(
+				x,
+				y,
+				x + size,
+				y + size
+			);
+
+			grad.addColorStop(
+				0,
+				'rgba(255,255,255,.38)'
+			);
+
+			grad.addColorStop(
+				.35,
+				'rgba(255,255,255,.05)'
+			);
+
+			grad.addColorStop(
+				1,
+				'rgba(0,0,0,.35)'
+			);
+
 			c.fillStyle = grad;
-			c.fillRect(x + 4, y + 4, size - 8, size - 8);
+
+			c.fillRect(
+				x + 4,
+				y + 4,
+				size - 8,
+				size - 8
+			);
+
 			c.fillStyle = 'rgba(255,255,255,.48)';
-			c.fillRect(x + 4, y + 4, size - 8, 2);
-			c.fillRect(x + 4, y + 4, 2, size - 8);
+
+			c.fillRect(
+				x + 4,
+				y + 4,
+				size - 8,
+				2
+			);
+
+			c.fillRect(
+				x + 4,
+				y + 4,
+				2,
+				size - 8
+			);
+
 			c.fillStyle = 'rgba(0,0,0,.35)';
-			c.fillRect(x + 4, y + size - 6, size - 8, 2);
+
+			c.fillRect(
+				x + 4,
+				y + size - 6,
+				size - 8,
+				2
+			);
+
 			c.restore()
 		}
 
 		function drawMini(c, type, ox, oy, size = 20) {
 			if(!type) return;
+
 			let cells = SHAPES[type],
 				xs = cells.map(p => p[0]),
 				ys = cells.map(p => p[1]),
-				w = (Math.max(...xs) - Math.min(...xs) + 1) * size,
-				h = (Math.max(...ys) - Math.min(...ys) + 1) * size;
-			for(const [x, y] of cells) drawBlock(c, ox + (x - Math.min(...xs)) * size - w / 2, oy + (y - Math.min(...ys)) * size - h / 2, type, 1, size)
+				w = (
+					Math.max(...xs) -
+					Math.min(...xs) +
+					1
+				) * size,
+				h = (
+					Math.max(...ys) -
+					Math.min(...ys) +
+					1
+				) * size;
+
+			for(const [x, y] of cells)
+				drawBlock(
+					c,
+					ox + (x - Math.min(...xs)) * size - w / 2,
+					oy + (y - Math.min(...ys)) * size - h / 2,
+					type,
+					1,
+					size
+				)
 		}
 
 		function drawMinis() {
 			hctx.clearRect(0, 0, 120, 90);
-			if(hold) drawMini(hctx, hold, 60, 46, 20);
+
+			if(hold)
+				drawMini(
+					hctx,
+					hold,
+					60,
+					46,
+					20
+				);
+
 			nctx.clearRect(0, 0, 120, 320);
+
 			for(let i = 0; i < 5; i++) {
-				drawMini(nctx, queue[i], 60, 30 + i * 62, i ? 16 : 19);
+				drawMini(
+					nctx,
+					queue[i],
+					60,
+					30 + i * 62,
+					i ? 16 : 19
+				);
+
 				if(i < 4) {
-					nctx.strokeStyle = 'rgba(255,255,255,.06)';
+					nctx.strokeStyle =
+						'rgba(255,255,255,.06)';
+
 					nctx.setLineDash([3, 5]);
+
 					nctx.beginPath();
 					nctx.moveTo(15, 61 + i * 62);
 					nctx.lineTo(105, 61 + i * 62);
 					nctx.stroke();
+
 					nctx.setLineDash([])
 				}
 			}
@@ -1691,6 +2162,7 @@
 
 		function drawAttract() {
 			board = emptyBoard();
+
 			const pattern = [
 				['T', 3, 19],
 				['I', 6, 18],
@@ -1700,31 +2172,41 @@
 				['Z', 1, 17],
 				['O', 6, 20]
 			];
+
 			for(const [t, bx, by] of pattern)
 				for(const [x, y] of SHAPES[t])
-					if(board[by + y] && bx + x < COLS) board[by + y][bx + x] = t;
+					if(
+						board[by + y] &&
+						bx + x < COLS
+					)
+						board[by + y][bx + x] = t;
+
 			piece = {
 				type: 'T',
 				x: 3,
 				y: 5,
 				cells: SHAPES.T.map(p => [...p])
 			};
+
 			draw();
+
 			hold = null;
 			queue = ['I', 'O', 'S', 'Z', 'J', 'L'];
+
 			drawMinis()
 		}
 
 		function burst(x, y, type) {
-			for(let i = 0; i < 5; i++) particles.push({
-				x: x * CELL + 15,
-				y: (y - HIDDEN) * CELL + 15,
-				vx: (Math.random() - .5) * .16,
-				vy: -.04 - Math.random() * .15,
-				life: 400 + Math.random() * 300,
-				size: 2 + Math.random() * 4,
-				color: colorFor(type)
-			})
+			for(let i = 0; i < 5; i++)
+				particles.push({
+					x: x * CELL + 15,
+					y: (y - HIDDEN) * CELL + 15,
+					vx: (Math.random() - .5) * .16,
+					vy: -.04 - Math.random() * .15,
+					life: 400 + Math.random() * 300,
+					size: 2 + Math.random() * 4,
+					color: colorFor(type)
+				})
 		}
 
 		function updateParticles(dt) {
@@ -1734,7 +2216,10 @@
 				p.vy += .00035 * dt;
 				p.life -= dt
 			}
-			particles = particles.filter(p => p.life > 0)
+
+			particles = particles.filter(
+				p => p.life > 0
+			)
 		}
 
 		function flash() {
@@ -1752,51 +2237,107 @@
 
 		function formatTime(ms, tenths = true) {
 			ms = Math.max(0, ms || 0);
+
 			let m = Math.floor(ms / 60000),
 				s = Math.floor(ms / 1000) % 60,
 				d = Math.floor(ms / 100) % 10;
-			return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0') + (tenths ? '.' + d : '')
+
+			return String(m).padStart(2, '0') +
+				':' +
+				String(s).padStart(2, '0') +
+				(tenths ? '.' + d : '')
 		}
 
 		function updateHud() {
-			el.score.textContent = String(score).padStart(7, '0');
+			el.score.textContent =
+				String(score).padStart(7, '0');
+
 			el.lines.textContent = lines;
 			el.level.textContent = level;
-			el.combo.textContent = combo > 0 ? '×' + combo : '—';
-			el.b2b.textContent = b2b > 1 ? '×' + b2b : '—';
-			el.pps.textContent = elapsed > 1000 ? (pieces / (elapsed / 1000)).toFixed(2) : '0.00';
-			el.timer.textContent = formatTime(mode === 'ultra' ? remaining : elapsed);
-			el.meter.style.width = ((lines % 10) * 10) + '%';
+
+			el.combo.textContent =
+				combo > 0 ? 'Ã' + combo : 'â';
+
+			el.b2b.textContent =
+				b2b > 1 ? 'Ã' + b2b : 'â';
+
+			el.pps.textContent =
+				elapsed > 1000
+					? (pieces / (elapsed / 1000)).toFixed(2)
+					: '0.00';
+
+			el.timer.textContent =
+				formatTime(
+					mode === 'ultra'
+						? remaining
+						: elapsed
+				);
+
+			el.meter.style.width =
+				((lines % 10) * 10) + '%';
+
 			let rec = records[mode];
-			el.best.textContent = mode === 'sprint' ? (rec ? formatTime(rec) : '—') : Number(rec || 0).toLocaleString()
+
+			el.best.textContent =
+				mode === 'sprint'
+					? (rec ? formatTime(rec) : 'â')
+					: Number(rec || 0).toLocaleString()
 		}
 
 		function updateBests() {
-			$('#bestRow').innerHTML = `<span>MARATHON <b>${Number(records.marathon||0).toLocaleString()}</b></span><span>SPRINT <b>${records.sprint?formatTime(records.sprint):'—'}</b></span><span>ULTRA <b>${Number(records.ultra||0).toLocaleString()}</b></span><span>CHAOS <b>${Number(records.chaos||0).toLocaleString()}</b></span><span>RUNS <b>${records.games||0}</b></span>`
+			$('#bestRow').innerHTML =
+				`<span>MARATHON <b>${Number(records.marathon||0).toLocaleString()}</b></span>` +
+				`<span>SPRINT <b>${records.sprint?formatTime(records.sprint):'â'}</b></span>` +
+				`<span>ULTRA <b>${Number(records.ultra||0).toLocaleString()}</b></span>` +
+				`<span>CHAOS <b>${Number(records.chaos||0).toLocaleString()}</b></span>` +
+				`<span>RUNS <b>${records.games||0}</b></span>`
 		}
 
 		function ensureAudio() {
-			if(!audio) audio = new(window.AudioContext || window.webkitAudioContext)();
-			if(audio.state === 'suspended') audio.resume()
+			if(!audio)
+				audio = new(
+					window.AudioContext ||
+					window.webkitAudioContext
+				)();
+
+			if(audio.state === 'suspended')
+				audio.resume()
 		}
 
-		function tone(freq, dur = .06, type = 'square', vol = .045, delay = 0) {
+		function tone(
+			freq,
+			dur = .06,
+			type = 'square',
+			vol = .045,
+			delay = 0
+		) {
 			if(!settings.sound) return;
+
 			ensureAudio();
+
 			let o = audio.createOscillator(),
 				g = audio.createGain(),
 				t = audio.currentTime + delay;
+
 			o.type = type;
 			o.frequency.setValueAtTime(freq, t);
+
 			g.gain.setValueAtTime(vol, t);
-			g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+
+			g.gain.exponentialRampToValueAtTime(
+				.0001,
+				t + dur
+			);
+
 			o.connect(g).connect(audio.destination);
+
 			o.start(t);
 			o.stop(t + dur)
 		}
 
 		function sfx(name) {
 			if(!settings.sound) return;
+
 			const map = {
 				move: [
 					[90, .025]
@@ -1855,19 +2396,50 @@
 					[880, .2]
 				]
 			};
-			(map[name] || []).forEach((n, i) => tone(n[0], n[1], 'square', .045, i * .045))
+
+			(map[name] || []).forEach(
+				(n, i) =>
+					tone(
+						n[0],
+						n[1],
+						'square',
+						.045,
+						i * .045
+					)
+			)
 		}
 
 		function startMusic() {
 			stopMusic();
-			if(!settings.music || state !== 'playing') return;
-			let seq = [110, 165, 220, 165, 123, 185, 247, 185],
+
+			if(!settings.music || state !== 'playing')
+				return;
+
+			let seq = [
+					110,
+					165,
+					220,
+					165,
+					123,
+					185,
+					247,
+					185
+				],
 				i = 0;
+
 			musicTimer = setInterval(() => {
 				if(state === 'playing') {
 					let old = settings.sound;
+
 					settings.sound = true;
-					tone(seq[i++ % seq.length], .09, 'triangle', .018);
+
+					tone(
+						seq[i++ % seq.length],
+						.09,
+						'triangle',
+						.018
+					);
+
 					settings.sound = old
 				}
 			}, 240)
@@ -1878,25 +2450,75 @@
 			musicTimer = null
 		}
 
+		function updateGhostOpacityUI() {
+			const slider = $('#ghostOpacity');
+			const output = $('#ghostOpacityValue');
+
+			if(!slider || !output) return;
+
+			const value = Math.max(
+				0,
+				Math.min(
+					1,
+					Number(settings.ghostOpacity) || 0
+				)
+			);
+
+			settings.ghostOpacity = value;
+			slider.value = String(value);
+			output.textContent =
+				Math.round(value * 100) + '%';
+		}
+
 		function applyTheme() {
-			let t = THEMES[settings.theme % THEMES.length];
-			for(const [k, v] of Object.entries(t.css)) document.documentElement.style.setProperty(k, v);
-			document.documentElement.style.setProperty('--scan', settings.scanlines ? '.075' : '0');
-			$('#soundBtn').textContent = settings.sound ? '♪' : '×';
-			$$('.switch').forEach(b => b.classList.toggle('on', !!settings[b.dataset.setting]));
-			$('#arrSelect').value = String(settings.arr);
+			let t = THEMES[
+				settings.theme % THEMES.length
+			];
+
+			for(const [k, v] of Object.entries(t.css))
+				document.documentElement.style.setProperty(
+					k,
+					v
+				);
+
+			document.documentElement.style.setProperty(
+				'--scan',
+				settings.scanlines ? '.075' : '0'
+			);
+
+			$('#soundBtn').textContent =
+				settings.sound ? 'âª' : 'Ã';
+
+			$$('.switch').forEach(b =>
+				b.classList.toggle(
+					'on',
+					!!settings[b.dataset.setting]
+				)
+			);
+
+			$('#arrSelect').value =
+				String(settings.arr);
+
+			updateGhostOpacityUI();
+
 			draw();
 			drawMinis()
 		}
 
 		function setSetting(k) {
 			settings[k] = !settings[k];
+
 			save('nb-settings', settings);
 			applyTheme();
+
 			if(k === 'music') {
-				settings.music ? startMusic() : stopMusic()
+				settings.music
+					? startMusic()
+					: stopMusic()
 			}
-			if(k === 'sound') sfx('rotate')
+
+			if(k === 'sound')
+				sfx('rotate')
 		}
 
 		function action(a) {
@@ -1906,13 +2528,21 @@
 			} else if(a === 'right') {
 				move(1, 0);
 				sfx('move')
-			} else if(a === 'soft') move(0, 1, true);
-			else if(a === 'cw') rotate(1);
-			else if(a === 'ccw') rotate(-1);
-			else if(a === 'hard') hardDrop();
-			else if(a === 'hold') holdPiece();
-			else if(a === 'pause') togglePause()
+			} else if(a === 'soft') {
+				move(0, 1, true)
+			} else if(a === 'cw') {
+				rotate(1)
+			} else if(a === 'ccw') {
+				rotate(-1)
+			} else if(a === 'hard') {
+				hardDrop()
+			} else if(a === 'hold') {
+				holdPiece()
+			} else if(a === 'pause') {
+				togglePause()
+			}
 		}
+
 		const keyMap = {
 			ArrowLeft: 'left',
 			ArrowRight: 'right',
@@ -1927,65 +2557,135 @@
 			KeyP: 'pause',
 			Escape: 'pause'
 		};
+
 		addEventListener('keydown', e => {
 			let a = keyMap[e.code];
+
 			if(!a) {
-				if(e.code === 'KeyR' && state !== 'menu') begin();
+				if(
+					e.code === 'KeyR' &&
+					state !== 'menu'
+				) begin();
+
 				return
 			}
+
 			e.preventDefault();
-			if(['left', 'right', 'soft'].includes(a)) {
+
+			if(
+				['left', 'right', 'soft'].includes(a)
+			) {
 				if(!keys[a]) {
 					action(a);
 					keys[a] = true;
 					moveTimers[a] = 0
 				}
-			} else if(!e.repeat) action(a)
+			} else if(!e.repeat) {
+				action(a)
+			}
 		});
+
 		addEventListener('keyup', e => {
 			let a = keyMap[e.code];
+
 			if(a) {
 				keys[a] = false;
 				moveTimers[a] = 0
 			}
 		});
+
 		addEventListener('blur', () => {
 			keys = {};
-			if(state === 'playing') togglePause(true)
+
+			if(state === 'playing')
+				togglePause(true)
 		});
-		$$('.mode-card').forEach(b => b.onclick = () => {
-			$$('.mode-card').forEach(x => x.classList.remove('active'));
-			b.classList.add('active');
-			mode = b.dataset.mode;
-			updateBests();
-			sfx('rotate')
-		});
+
+		$$('.mode-card').forEach(b =>
+			b.onclick = () => {
+				$$('.mode-card').forEach(
+					x => x.classList.remove('active')
+				);
+
+				b.classList.add('active');
+				mode = b.dataset.mode;
+
+				updateBests();
+				sfx('rotate')
+			}
+		);
+
 		$('#startBtn').onclick = begin;
 		$('#againBtn').onclick = begin;
 		$('#menuBtn').onclick = goMenu;
-		$('#pauseBtn').onclick = () => togglePause();
+
+		$('#pauseBtn').onclick =
+			() => togglePause();
+
 		$('#themeBtn').onclick = () => {
-			settings.theme = (settings.theme + 1) % THEMES.length;
+			settings.theme =
+				(settings.theme + 1) %
+				THEMES.length;
+
 			save('nb-settings', settings);
 			applyTheme();
 			sfx('rotate')
 		};
-		$('#soundBtn').onclick = () => setSetting('sound');
+
+		$('#soundBtn').onclick =
+			() => setSetting('sound');
+
 		$('#settingsBtn').onclick = () => {
-			resumeAfterSettings = state === 'playing';
-			if(resumeAfterSettings) togglePause(true);
-			el.settings.classList.remove('hidden')
+			resumeAfterSettings =
+				state === 'playing';
+
+			if(resumeAfterSettings)
+				togglePause(true);
+
+			el.settings.classList.remove('hidden');
+
+			updateGhostOpacityUI();
 		};
+
 		$('#closeSettingsBtn').onclick = () => {
 			el.settings.classList.add('hidden');
-			if(resumeAfterSettings && state === 'paused') togglePause(false);
+
+			if(
+				resumeAfterSettings &&
+				state === 'paused'
+			)
+				togglePause(false);
+
 			resumeAfterSettings = false
 		};
-		$$('.switch').forEach(b => b.onclick = () => setSetting(b.dataset.setting));
+
+		$$('.switch').forEach(
+			b =>
+				b.onclick = () =>
+					setSetting(
+						b.dataset.setting
+					)
+		);
+
+		$('#ghostOpacity').oninput = e => {
+			settings.ghostOpacity =
+				Number(e.target.value);
+
+			$('#ghostOpacityValue').textContent =
+				Math.round(
+					settings.ghostOpacity * 100
+				) + '%';
+
+			save('nb-settings', settings);
+
+			draw()
+		};
+
 		$('#arrSelect').onchange = e => {
 			settings.arr = +e.target.value;
 			save('nb-settings', settings)
 		};
+
 		$('#resetStatsBtn').onclick = () => {
 			if(confirm('Erase all Neon Blockfall records?')) {
 				records = {
@@ -1996,21 +2696,36 @@
 					chaos: 0,
 					games: 0
 				};
+
 				save('nb-records', records);
 				updateBests();
 				updateHud()
 			}
 		};
+
 		$$('.touch-btn').forEach(b => {
 			const fire = e => {
 				e.preventDefault();
 				action(b.dataset.action)
 			};
-			b.addEventListener('pointerdown', fire)
+
+			b.addEventListener(
+				'pointerdown',
+				fire
+			)
 		});
-		document.addEventListener('visibilitychange', () => {
-			if(document.hidden && state === 'playing') togglePause(true)
-		});
+
+		document.addEventListener(
+			'visibilitychange',
+			() => {
+				if(
+					document.hidden &&
+					state === 'playing'
+				)
+					togglePause(true)
+			}
+		);
+
 		drawAttract();
 		applyTheme();
 		updateBests();
@@ -2018,4 +2733,5 @@
 	})();
 	</script>
 </body>
+
 </html>
