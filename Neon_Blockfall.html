@@ -1608,7 +1608,7 @@
 				if(settings.ghost) {
 					let gy = ghostY();
 					for(const [x, y] of piece.cells)
-						if(gy + y >= HIDDEN) drawBlock(ctx, (piece.x + x) * CELL, (gy + y - HIDDEN) * CELL, piece.type, 0.8, CELL, true)
+						if(gy + y >= HIDDEN) drawBlock(ctx, (piece.x + x) * CELL, (gy + y - HIDDEN) * CELL, piece.type, 0.2, CELL, false)
 				}
 				for(const [x, y] of piece.cells)
 					if(piece.y + y >= HIDDEN) drawBlock(ctx, (piece.x + x) * CELL, (piece.y + y - HIDDEN) * CELL, piece.type, 1, CELL)
